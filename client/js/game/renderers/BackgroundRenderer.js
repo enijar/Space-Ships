@@ -4,10 +4,8 @@ import config from '../config'
 export default class BackgroundRenderer extends BaseRenderer {
   constructor (props) {
     super(props);
-    this.width = config.width;
-    this.height = config.height;
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
+    this.canvas.width = this.width = config.width;
+    this.canvas.height = this.height = config.height;
   }
 
   update () {
