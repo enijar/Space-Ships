@@ -1,19 +1,20 @@
-const state = require('../state');
+const state = require('../state/index');
 const Socket = require('../entities/Socket');
 const {guid} = require('../../../shared/util');
 
-const logConnectedClients = () => {
-  console.info(`[info] ${Object.keys(state.sockets).length} clients connected`);
-};
-
 module.exports = socket => {
+  // Add socket to state
   socket.guid = guid();
   state.sockets[socket.guid] = new Socket(socket);
 
-  console.info('[info] connection opened');
-  logConnectedClients();
-
-  socket.send(JSON.stringify({event: 'connected'}));
+  const player = state.players.add();
+  const playerPublic = player.public();
+  const playerPrivate = player.private();
+  state.sockets[socket.guid].emit('connected', {
+    player: playerPrivate,
+    players: state.players.all([playerPublic.id]),
+  });
+  state.sockets[socket.guid].broadcast('player.joined', playerPublic);
 
   // Handle client messages
   socket.on('message', message => {
@@ -30,8 +31,8 @@ module.exports = socket => {
 
   // Handle client disconnections
   socket.on('close', () => {
-    console.info('[info] connection closed');
+    state.players.remove(playerPrivate.uuid);
+    state.sockets[socket.guid].broadcast('player.left', playerPublic);
     delete state.sockets[socket.guid];
-    logConnectedClients();
   });
 };

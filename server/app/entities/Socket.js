@@ -1,5 +1,5 @@
 const handlers = require('../socket/handlers');
-const state = require('../state');
+const state = require('../state/index');
 
 module.exports = class Socket {
   constructor (socket) {
@@ -9,7 +9,11 @@ module.exports = class Socket {
 
   handleEvent (event, data) {
     if (handlers.hasOwnProperty(event)) {
-      handlers[event](this, data);
+      try {
+        handlers[event](this, data);
+      } catch (err) {
+        console.error(`Error with event handler "${event}":`, err);
+      }
     }
   }
 
@@ -23,13 +27,13 @@ module.exports = class Socket {
   }
 
   /**
-   * Send message to all sockets
+   * Send message to all sockets (except this socket)
    * @param {String} event
    * @param {*} data
    */
   broadcast (event, data) {
     for (let socketId in state.sockets) {
-      if (state.sockets.hasOwnProperty(socketId)) {
+      if (state.sockets.hasOwnProperty(socketId) && socketId !== this.guid) {
         state.sockets[socketId].socket.send(JSON.stringify({event, data}));
       }
     }

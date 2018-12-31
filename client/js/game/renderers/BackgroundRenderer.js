@@ -4,8 +4,8 @@ import config from '../config'
 export default class BackgroundRenderer extends BaseRenderer {
   constructor (props) {
     super(props);
-    this.canvas.width = this.width = config.width;
-    this.canvas.height = this.height = config.height;
+    this.canvas.width = config.width;
+    this.canvas.height = config.height;
   }
 
   update () {
@@ -13,8 +13,8 @@ export default class BackgroundRenderer extends BaseRenderer {
   }
 
   render () {
-    this.ctx.clearRect(0, 0, this.width, this.height);
+    this.ctx.clearRect(0, 0, config.width, config.height);
     this.ctx.fillStyle = '#111';
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fillRect(0, 0, config.width, config.height);
   }
 }
