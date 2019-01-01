@@ -12,13 +12,9 @@ export default class Screen extends Component {
 
   render () {
     return (
-      < div
-        className={`Screen Screen--${this.props.name}`
-        }>
+      <div className={`Screen Screen--${this.props.name}`}>
         {this.props.children}
-        <
-        /div>
-        )
-        ;
-        }
-        }
+      </div>
+    );
+  }
+}

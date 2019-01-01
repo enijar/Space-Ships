@@ -5,12 +5,12 @@ export default class GameContainer extends Component {
   canvas = createRef();
   game = null;
 
-  componentDidMount() {
+  componentDidMount () {
     this.game = new Game(this.canvas.current);
     this.game.start();
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     this.game && this.game.stop();
   }
 
