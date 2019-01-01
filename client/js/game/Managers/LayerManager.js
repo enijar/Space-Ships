@@ -1,3 +1,4 @@
+import Config from '../Config'
 import BaseManager from './BaseManager'
 
 export default class LayerManager extends BaseManager {
@@ -19,7 +20,7 @@ export default class LayerManager extends BaseManager {
     this.layers.push(layer);
   }
 
-  get(id) {
+  get (id) {
     for (let i = 0; i < this.layers.length; i++) {
       if (this.layers[i].id === id) {
         return this.layers[i];
@@ -48,7 +49,7 @@ export default class LayerManager extends BaseManager {
         this.layers[i].x,
         this.layers[i].y,
         this.layers[i].width,
-        this.layers[i].height
+        this.layers[i].height,
       );
     }
   }

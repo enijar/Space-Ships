@@ -2,16 +2,35 @@ import Config from '../Config'
 import BaseLayer from './BaseLayer'
 import StarFactory from '../Factories/StarFactory'
 
-const STAR_TOTAL = 100;
+const STAR_TOTAL = 600;
 
 export default class MapLayer extends BaseLayer {
   constructor (props = {}) {
     super(props);
-    this.setSize(Config.width, Config.height);
+
+    this.setSize(Config.map.width, Config.map.height);
+
     this.stars = [];
 
     for (let i = 0; i < STAR_TOTAL; i++) {
       this.stars.push(new StarFactory());
+    }
+  }
+
+  update () {
+    const player = this.game.layerManager.get('player');
+
+    if (this.game.controlsManager.keyPressed('a')) {
+      this.x += player.speed;
+    }
+    if (this.game.controlsManager.keyPressed('d')) {
+      this.x -= player.speed;
+    }
+    if (this.game.controlsManager.keyPressed('w')) {
+      this.y += player.speed;
+    }
+    if (this.game.controlsManager.keyPressed('s')) {
+      this.y -= player.speed;
     }
   }
 
